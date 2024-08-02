@@ -7,9 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-
   build:
-
     runs-on: ubuntu-latest
 
     steps:
@@ -20,11 +18,12 @@ jobs:
     
     - name: Docker login
       env:
-        DOCKER_USER: ${{ secrets.DOCKER_USER}}
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD}}
-        run: |
-          echo "Iniciando login"
-          docker login -u $DOCKER_USER -p $DOCKER_PASSWORD
-          echo "Fin del login"
-#    - name: Build the Docker image
-#      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+        DOCKER_USER: ${{ secrets.DOCKER_USER }}
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: |
+        echo "Iniciando login"
+        echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
+        echo "Fin del login"
+    
+    # - name: Build the Docker image
+    #   run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
