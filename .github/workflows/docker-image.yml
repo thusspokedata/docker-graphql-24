@@ -28,19 +28,21 @@ jobs:
       env:
         DOCKER_USER: ${{ secrets.DOCKER_USER }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-        NEW_VERSION: ${{ steps.version.outputs.version }}
       run: |
         echo $DOCKER_PASSWORD | docker login -u $DOCKER_USER --password-stdin
-        echo "New version: $NEW_VERSION!!!!!"
 
     - name: Build Docker Image
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.version }}
       run: |
-        docker build -t thusspokedata/docker-graphql:0.0.1 .
+        docker build -t thusspokedata/docker-graphql:$NEW_VERSION .
         docker build -t thusspokedata/docker-graphql:latest .
 
     - name: Push Docker Image
+      env:
+        NEW_VERSION: ${{ steps.version.outputs.version }}
       run: |
-        docker push thusspokedata/docker-graphql:0.0.1
+        docker push thusspokedata/docker-graphql:$NEW_VERSION
         docker push thusspokedata/docker-graphql:latest
     
     # - name: Build the Docker image
